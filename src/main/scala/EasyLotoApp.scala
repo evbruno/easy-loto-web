@@ -7,12 +7,18 @@ import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.model.{HttpResponse, HttpRequest}
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.directives.{RespondWithDirectives, MiscDirectives}
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.{ActorMaterializer, Materializer}
 import akka.stream.scaladsl.{Flow, Sink, Source}
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import java.io.IOException
+
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.HttpMethods._
+import akka.http.scaladsl.model._
+
 import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.math._
 import spray.json.DefaultJsonProtocol
@@ -50,7 +56,7 @@ trait Protocols extends DefaultJsonProtocol {
   implicit val ipPairSummaryFormat = jsonFormat3(IpPairSummary.apply)
 }
 
-trait Service extends Protocols {
+trait Service extends Protocols with MiscDirectives with RespondWithDirectives {
   implicit val system: ActorSystem
   implicit def executor: ExecutionContextExecutor
   implicit val materializer: Materializer
@@ -80,8 +86,13 @@ trait Service extends Protocols {
   val routes = {
     logRequestResult("akka-http-microservice") {
 		(get & path("")) {
-			complete { f"Hello Heroku, time now is ${new java.util.Date}%tT" }
-		} ~ pathPrefix("ip") {
+			{ extractClientIP { ip =>
+				complete {
+					val href = <a href={s"/ip/$ip"}>link</a>
+					HttpEntity(MediaTypes.`text/html`, f"Hello Heroku, server time now is ${new java.util.Date}%tT. Check out this $href.")
+				}
+			} }
+		}  ~ pathPrefix("ip") {
         (get & path(Segment)) { ip =>
           complete {
             fetchIpInfo(ip).map[ToResponseMarshallable] {
