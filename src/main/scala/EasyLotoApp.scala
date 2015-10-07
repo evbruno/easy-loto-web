@@ -80,7 +80,7 @@ trait Service extends Protocols {
   val routes = {
     logRequestResult("akka-http-microservice") {
 		(get & path("")) {
-			complete { "Hello Heroku" }
+			complete { f"Hello Heroku, time now is ${new java.util.Date}%tT" }
 		} ~ pathPrefix("ip") {
         (get & path(Segment)) { ip =>
           complete {
