@@ -36,4 +36,11 @@ lazy val root = (project in file(".")).
 
 lazy val jobs = project.dependsOn(root).
 				settings(commonSettings: _*).
-				settings(name := "easy-loto-jobz")
+				settings(
+					name := "easy-loto-jobz",
+					libraryDependencies ++= {
+						Seq("commons-io" % "commons-io" % "2.4",
+							"net.ruippeixotog" %% "scala-scraper" % "0.1.1"
+						)
+					}
+				)
