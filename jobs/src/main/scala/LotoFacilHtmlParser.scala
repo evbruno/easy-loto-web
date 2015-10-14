@@ -1,5 +1,5 @@
 
-import loto.Resultado
+import loto.Result
 import net.ruippeixotog.scalascraper.browser.Browser
 import net.ruippeixotog.scalascraper.dsl.DSL.Parse._
 import net.ruippeixotog.scalascraper.dsl.DSL._
@@ -33,11 +33,11 @@ class LotoFacilHtmlParser(fileName: String) extends loto.LotoLogger {
 		linhas
 	}
 	
-	def parse: ArrayBuffer[Resultado] = {
+	def parse: ArrayBuffer[Result] = {
 		parseLinhas.map { linhas =>
 			val aposta = linhas.slice(2, 17).map(_.toInt).sorted.toIndexedSeq
 			val concurso = linhas(0).toInt
-			Resultado(concurso, aposta)
+			Result(concurso, aposta)
 		}
 	}
 

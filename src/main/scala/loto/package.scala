@@ -5,24 +5,21 @@ import scala.collection.immutable.IndexedSeq
 
 package object loto {
 
-	type Aposta = IndexedSeq[Int]
+	type Numbers = IndexedSeq[Int]
 
-	case class Resultado(concurso: Int, aposta: Aposta) {
-		assert(aposta.size == 15, s"Aposta inválida: ${aposta}")
+	// TODO drawDate: Date, prizes: List[Prize]
+
+	case class Result(draw: Int, numbers: Numbers) {
+		assert(draw > 0, s"Invalid draw: ${draw}")
+		assert(numbers.size == 15, s"Invalid number combination: ${numbers}")
 	}
 
-	case class Combinacao(aposta: Aposta) {
-		val acertos = scala.collection.mutable.Map(11 -> 0, 12 -> 0, 13 -> 0, 14 -> 0, 15 -> 0)
-		var totalAcertos = 0
+	case class Bet(numbers: Numbers, owner: Option[String] = None) {
+		assert(numbers.size == 15, s"Invalid number combination: ${numbers}")
+	}
 
-		def acertou(pontos: Int) = {
-			totalAcertos += 1
-			acertos.update(pontos, acertos(pontos) + 1)
-		}
-
-		override def toString =
-			if (totalAcertos == 0) s"Aposta ${aposta} num deu nada"
-			else s"Aposta ${aposta} acertou: (${totalAcertos}) : ${acertos.toString}"
+	case class BetHit(bet: Bet, result: Result) {
+		lazy val hits = result.numbers.size - (result.numbers diff bet.numbers).size
 	}
 
 }

@@ -37,11 +37,11 @@ libraryDependencies ++= {
 Revolver.settings
 
 lazy val root = (project in file(".")).
-				settings(commonSettings: _*)
+				settings(commonSettings)
 
 lazy val jobs = project.dependsOn(root).
-				settings(commonSettings: _*).
 				settings(
+					commonSettings,
 					name := "easy-loto-jobz",
 					libraryDependencies ++= {
 						Seq(

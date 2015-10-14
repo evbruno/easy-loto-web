@@ -17,13 +17,13 @@ object LotoFacilJob extends App with loto.LotoLogger {
 	
 	val last = LotoFacilRepo.lastConcurso
 	
-	if (last == resultados.last.concurso)
+	if (last == resultados.last.draw)
 		info("Records are on date. Nothing else to do...")
 	else {
 		if (last == 0) info("Save'em all [init] !")
 		else info(s"Save concursos > ${last}")
 
-		resultados filter (_.concurso > last) foreach (LotoFacilRepo.save _)
+		resultados filter (_.draw > last) foreach (LotoFacilRepo.save _)
 	}
 
 

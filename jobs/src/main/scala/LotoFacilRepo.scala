@@ -12,7 +12,7 @@ object LotoFacilRepo extends LotoLogger {
 	//val db = mongoClient("lotofacil")
 
 	info(s"MongoDB URI: ${uri}")
-	info(s"MongoDB Client URI: ${uri}")
+	info(s"MongoDB Client URI: ${mongoClientURI}")
 	info(s"MongoDB Client URI.database: ${mongoClientURI.database}")
 	line
 
@@ -22,8 +22,8 @@ object LotoFacilRepo extends LotoLogger {
 	val atualizacoes = db("atualizacoes")
 	val resultados = db("resultados")
 
-	def save(obj: Resultado) {
-		val doc = MongoDBObject("concurso" -> obj.concurso, "aposta" -> obj.aposta)
+	def save(obj: Result) {
+		val doc = MongoDBObject("concurso" -> obj.draw, "aposta" -> obj.numbers)
 		resultados.insert(doc)
 	}
 	
