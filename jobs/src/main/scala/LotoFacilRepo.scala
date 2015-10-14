@@ -1,11 +1,17 @@
 import com.mongodb.casbah.Imports._
-import loto.Resultado
+import loto._
 
-object LotoFacilRepo {
+object LotoFacilRepo extends LotoLogger {
 
-	val uri = scala.util.Properties.envOrElse("MONGOLAB_URI", "localhost")
+	// eg:   mongodb://<dbuser>:<dbpassword>@mongolob.url:AAA/BBB
+
+	val uri = scala.util.Properties.envOrElse("MONGOLAB_URI", "mongodb://localhost:27017")
 //	val mongoClient = MongoClient("localhost", 27017)
-	val mongoClient = MongoClient(uri)
+
+	info(s"MongoDB URI: ${uri}")
+	line
+
+	val mongoClient = MongoClient(MongoClientURI(uri))
 	val db = mongoClient("lotofacil")
 
 	val atualizacoes = db("atualizacoes")
