@@ -6,7 +6,7 @@ trait LotoLogger {
 	private val _char = "#"
 	private val _line = _char * width
 
-	def line = println(_line)
+	def line() = println(_line)
 
 	def info(what: String): Unit = {
 		val space = " " * (width - what.length - 5)

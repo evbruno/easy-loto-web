@@ -1,10 +1,9 @@
-import com.mongodb.casbah
 import com.mongodb.casbah.Imports._
 import loto._
 
 object LotoFacilRepo extends LotoLogger {
 
-	// eg:   mongodb://<dbuser>:<dbpassword>@mongolob.url:AAA/BBB
+	// eg:  mongodb://<dbuser>:<dbpassword>@mongolob.url:AAA/DATABASE
 	val uri = scala.util.Properties.envOrElse("MONGOLAB_URI", "mongodb://localhost:27017/lotofacil")
 	val mongoClientURI = MongoClientURI(uri)
 
@@ -37,7 +36,7 @@ object LotoFacilRepo extends LotoLogger {
 		)
 	}
 
-	def lastConcurso : Int = {
+	def lastConcurso: Int = {
 		val query = MongoDBObject() // All documents
 		val fields = MongoDBObject("concurso" -> 1)
 		val orderBy = MongoDBObject("concurso" -> -1)
@@ -50,6 +49,6 @@ object LotoFacilRepo extends LotoLogger {
 		}
 	}
 
-	def close = mongoClient.close()
+	def close() = mongoClient.close()
 
 }
