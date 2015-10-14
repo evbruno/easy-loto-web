@@ -18,4 +18,7 @@ $ sbt
 > test
 ```
 
-[Forked from theiterators](https://github.com/theiterators/akka-http-microservice)
+## Extras
+
+https://github.com/jrudolph/sbt-dependency-graph
+

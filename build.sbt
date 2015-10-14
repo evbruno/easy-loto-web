@@ -17,6 +17,7 @@ libraryDependencies ++= {
 	val akkaV = "2.3.12"
 	val akkaStreamV = "1.0"
 	val scalaTestV = "2.2.5"
+	val casbahVersion = "2.8.2"
 	Seq(
 		"com.typesafe.akka" %% "akka-actor" % akkaV,
 		"com.typesafe.akka" %% "akka-stream-experimental" % akkaStreamV,
@@ -25,7 +26,11 @@ libraryDependencies ++= {
 		"com.typesafe.akka" %% "akka-http-spray-json-experimental" % akkaStreamV,
 		"com.typesafe.akka" %% "akka-http-testkit-experimental" % akkaStreamV,
 		"org.scalatest" %% "scalatest" % scalaTestV % "test",
-		"org.scala-lang.modules" %% "scala-xml" % "1.0.5"
+		"org.scala-lang.modules" %% "scala-xml" % "1.0.5",
+		"org.mongodb" %% "casbah-core" % casbahVersion,
+//		"org.mongodb" %% "casbah-commons" % casbahVersion,
+//		"org.mongodb" %% "casbah-query" % casbahVersion,
+		"ch.qos.logback" % "logback-classic" % "1.1.3"
 	)
 }
 
@@ -39,8 +44,15 @@ lazy val jobs = project.dependsOn(root).
 				settings(
 					name := "easy-loto-jobz",
 					libraryDependencies ++= {
-						Seq("commons-io" % "commons-io" % "2.4",
+						Seq(
+							"commons-io" % "commons-io" % "2.4",
 							"net.ruippeixotog" %% "scala-scraper" % "0.1.1"
 						)
-					}
+					},
+					excludeDependencies += "com.typesafe.akka" %% "akka-actor",
+					excludeDependencies += "com.typesafe.akka" %% "akka-stream-experimental",
+					excludeDependencies += "com.typesafe.akka" %% "akka-http-core-experimental",
+					excludeDependencies += "com.typesafe.akka" %% "akka-http-experimental",
+					excludeDependencies += "com.typesafe.akka" %% "akka-http-testkit-experimental",
+					excludeDependencies += "com.typesafe.akka" %% "akka-http-spray-json-experimental"
 				)

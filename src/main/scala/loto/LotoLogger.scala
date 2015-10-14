@@ -2,7 +2,7 @@ package loto
 
 trait LotoLogger {
 
-	private val width = 120
+	private val width = 80
 	private val _char = "#"
 	private val _line = _char * width
 
