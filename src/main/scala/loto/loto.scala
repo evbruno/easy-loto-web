@@ -1,6 +1,3 @@
-package loto
-
-import spray.json.DefaultJsonProtocol
 
 package object loto {
 
@@ -8,10 +5,8 @@ package object loto {
 
 	type DateTime = org.joda.time.DateTime
 
-	trait BetProtocols extends DefaultJsonProtocol {
-		implicit val ipInfoFormat = jsonFormat2(Bet.apply)
-		implicit val ipPairSummaryRequestFormat = jsonFormat2(Result.apply)
-		implicit val ipPairSummaryFormat = jsonFormat2(BetHit.apply)
-	}
+	import scala.language.implicitConversions
+
+	implicit def fromLitToIndexedSeq(in: List[Int]) : Numbers = in.toIndexedSeq
 
 }

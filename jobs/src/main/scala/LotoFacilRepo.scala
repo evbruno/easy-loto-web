@@ -18,33 +18,33 @@ object LotoFacilRepo extends LotoLogger {
 	val mongoClient = MongoClient(mongoClientURI)
 	val db = mongoClient(mongoClientURI.database.get)
 
-	val atualizacoes = db("atualizacoes")
-	val resultados = db("resultados")
+	val jobUpdates = db("jobs_updates")
+	val results = db("results")
 
 	def save(obj: Result) {
-		val doc = MongoDBObject("concurso" -> obj.draw, "aposta" -> obj.numbers)
-		resultados.insert(doc)
+		val doc = MongoDBObject("draw" -> obj.draw, "numbers" -> obj.numbers, "source" -> "lotofacil")
+		results.insert(doc)
 	}
 	
 	def updateJobExecution(totalParsed: Int) {
-		atualizacoes.insert(
+		jobUpdates.insert(
 			MongoDBObject(
 				"when" -> new java.util.Date,
 				"totalParsed" -> totalParsed,
-				"currentSize" -> atualizacoes.size
+				"currentSize" -> jobUpdates.size
 			)
 		)
 	}
 
 	def lastConcurso: Int = {
 		val query = MongoDBObject() // All documents
-		val fields = MongoDBObject("concurso" -> 1)
-		val orderBy = MongoDBObject("concurso" -> -1)
+		val fields = MongoDBObject("draw" -> 1)
+		val orderBy = MongoDBObject("draw" -> -1)
 
-		val x = resultados.findOne(query, fields, orderBy)
+		val x = results.findOne(query, fields, orderBy)
 
 		x match {
-			case Some(k) => k.getAs[Int]("concurso").get
+			case Some(k) => k.getAs[Int]("draw").get
 			case _ => 0
 		}
 	}
