@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/evbruno/easy-loto-web.svg)](https://travis-ci.org/evbruno/easy-loto-web)
+
 # Easy Loto
 
 ## Usage
