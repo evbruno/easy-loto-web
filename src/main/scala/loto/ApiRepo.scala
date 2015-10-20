@@ -44,6 +44,15 @@ trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirective
 			}
 		}
 	}
+
+	val staticFilesRoute = {
+		path("main") {
+			getFromResource("public/main.html")
+		} ~
+		pathPrefix("public") {
+			getFromResourceDirectory("public")
+		}
+	}
 }
 
 object ApiRepo {

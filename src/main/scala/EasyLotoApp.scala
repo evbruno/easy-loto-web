@@ -123,7 +123,7 @@ object AkkaHttpMicroservice extends App with Service with ApiRepo {
   override val config = ConfigFactory.load()
   override val logger = Logging(system, getClass)
 
-  val allRoutes = routes ~ apiRoute
+  val allRoutes = routes ~ apiRoute ~ staticFilesRoute
 
   Http().bindAndHandle(allRoutes, config.getString("http.interface"), config.getInt("http.port"))
 }
