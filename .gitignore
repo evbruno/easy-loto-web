@@ -21,4 +21,7 @@ project/plugins/project/
 
 node_modules
 
+# old stuff, remove it later
 **/www/app/vendor/*
+# bower stuff
+**/www/lib/vendor/*
