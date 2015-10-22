@@ -1,0 +1,14 @@
+{
+  "name": "easy-loto-web",
+  "version": "1.0.0",
+  "description": "EasyLoto Web",
+  "main": "index.html",
+  "license": "MIT",
+  "dependencies": {
+    "requirejs": "2.1.18",
+    "jquery": "2.1.4",
+    "knockout": "3.3.0",
+    "sammy": "0.7.6",
+    "materialize": "0.97.1"
+  }
+}

@@ -1,13 +1,13 @@
 package loto
 
 import akka.actor.ActorSystem
-import akka.http.scaladsl.coding.Gzip
-import akka.http.scaladsl.model.TransferEncodings.gzip
+import akka.http.scaladsl.model.headers._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.directives.{MiscDirectives, RespondWithDirectives}
 import com.mongodb.casbah.Imports._
 
 import scala.concurrent.Future
+
 
 trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirectives {
 
@@ -17,12 +17,21 @@ trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirective
 	//import scala.concurrent.ExecutionContext.Implicits.global
 
 	implicit val system: ActorSystem
+
 	import ApiRepo._
 	import system.dispatcher
 
-	def betsF = Future { bets }
-	def resultsF = Future { results }
-	def hitsF = Future { hits }
+	def betsF = Future {
+		bets
+	}
+
+	def resultsF = Future {
+		results
+	}
+
+	def hitsF = Future {
+		hits
+	}
 
 	val apiRoute = logRequestResult("easy-loto-api") {
 		pathPrefix("api") {
@@ -31,16 +40,16 @@ trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirective
 					"pong"
 				}
 			} ~
-			(get & path("lotofacil") & encodeResponseWith(Gzip)) {
+				(get & path("lotofacil") & encodeResponse & respondWithHeader(`Access-Control-Allow-Origin`.`*`)) { // encodeResponseWith(Gzip)
 				//complete { bets	}
 //				onSuccess(resultsF) { r => complete(r.toJson) }
-				onSuccess(resultsF) { r => complete(r.take(20).toJson) }
+					onSuccess(resultsF) { r => complete(r.take(20).toJson)	}
 			} ~
-			(get & path("lotofacil" / "bets")) {
-				onSuccess(betsF) { b => complete(b.toJson) }
+				(get & path("lotofacil" / "bets")) {
+					onSuccess(betsF) { b => complete(b.toJson) }
 			} ~
-			(get & path("lotofacil" / "hits")) {
-				onSuccess(hitsF) { h => complete(h.toJson) }
+				(get & path("lotofacil" / "hits")) {
+					onSuccess(hitsF) { h => complete(h.toJson) }
 			}
 		}
 	}
@@ -48,10 +57,18 @@ trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirective
 	val staticFilesRoute = {
 		path("main") {
 			getFromResource("public/main.html")
+		} ~ path("main2") {
+			getFromResource("public/main_old.html")
 		} ~
-		pathPrefix("public") {
-			getFromResourceDirectory("public")
-		}
+			pathPrefix("css") {
+				getFromResourceDirectory("public/css")
+			} ~
+			pathPrefix("font") {
+				getFromResourceDirectory("public/font")
+			} ~
+			pathPrefix("js") {
+				getFromResourceDirectory("public/js")
+			}
 	}
 }
 
@@ -68,17 +85,17 @@ object ApiRepo {
 
 	def close() = mongoClient.close()
 
-	def results : List[Result] = {
+	def results: List[Result] = {
 		val cursor = resultados.find().sort(MongoDBObject("concurso" -> -1))
 		(for (doc <- cursor) yield
-				Result(draw = doc.as[Int]("concurso"), numbers = doc.as[List[Int]]("aposta"))).toList
+		Result(draw = doc.as[Int]("concurso"), numbers = doc.as[List[Int]]("aposta"))).toList
 	}
 
 
-//	lazy val results = (1 to 10).map(c => Result(c, c to 14+c)).toList
+	//	lazy val results = (1 to 10).map(c => Result(c, c to 14+c)).toList
 
-	lazy val bets: List[Bet] = (7 to 10).map(c => Bet(c to 14+c)).toList
-	lazy val hits : List[BetHit] = bets.flatMap(b => results.map(r => BetHit(b, r)))
+	lazy val bets: List[Bet] = (7 to 10).map(c => Bet(c to 14 + c)).toList
+	lazy val hits: List[BetHit] = bets.flatMap(b => results.map(r => BetHit(b, r)))
 
 }
 

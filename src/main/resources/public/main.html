@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -7,128 +6,93 @@
     <title>Ea$yLoto</title>
     <!-- CSS  -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="public/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="public/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
+
 <div class="navbar-fixed">
     <nav class="blue-grey darken-2 z-depth-2" role="navigation">
         <div class="nav-wrapper container">
             <a id="logo-container" href="#" class="brand-logo blue-grey-text ">Ea$yLoto</a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="#">Lotofácil</a></li>
-                <li class="active"><a href="#">Mega$ena</a></li>
-                <li><a href="#"><i class="material-icons right">settings</i> Cfg</a></li>
+                <li class="active"><a href="#">Megasena</a></li>
+                <li><a href="#" title="Apostas"><i class="material-icons">assessment</i></a></li>
+                <li><a href="#" title="Configs"><i class="material-icons">settings</i></a></li>
             </ul>
             <ul id="nav-mobile" class="side-nav">
                 <li><a href="#">Lotofácil</a></li>
-                <li class="active"><a href="#">Mega$ena</a></li>
-                <li><a href="#"><i class="material-icons right">settings</i> MeusJogo</a></li>
+                <li class="active"><a href="#">Megasena</a></li>
+                <li><a href="#">Apostas</a></li>
+                <li><a href="#">Configurações</a></li>
             </ul>
             <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
         </div>
     </nav>
 </div>
-<div id="index-banner" class="parallax-container">
+
+<div id="index-banner">
     <div class="section no-pad-bot">
         <div class="container">
-            <br><br>
-            <h1 class="header center teal-text text-lighten-2">Parallax Template</h1>
-            <div class="row center">
-                <h5 class="header col s12">A modern responsive front-end framework based on Material Design</h5>
-            </div>
-            <div class="row center">
-                <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
-                <div class="card-panel hoverable"> Hoverable Card Panel</div>
-            </div>
-            <br><br>
+            <h1 class="header center teal-text text-lighten-2">Easy Loto</h1>
+            <p>Nome: <strong data-bind="text: now"></strong>.</p>
         </div>
     </div>
-
 </div>
-<div class="container">
+
+
+<div class="container"  class="parallax-container">
     <div class="section">
-        <!--   Icon Section   -->
         <div class="row">
-            <div class="col s12 m12">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="card-title">Card Title</span>
-                        <p>I am a very simple card. I am good at containing small bits of information.
-                            I am convenient because I require little markup to use effectively.</p>
-                    </div>
-                    <div class="card-action">
-                        <a href="#">This is a link</a>
-                        <a href="#">This is a link</a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jogo</th>
+                        <th>Números</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: lotofacil">
+                    <tr>
+                        <td data-bind="text: draw"></td>
+                        <td data-bind="text: numbers"></td>
+                    </tr>
+                </tbody>
+            </table>
 
-
-        <div class="row">
-            <div class="col s12 m4">
+            <div class="col s12 m6">
                 <div class="icon-block">
-                    <h2 class="center brown-text"><i class="material-icons">flash_on</i></h2>
-                    <h5 class="center">Speeds up development</h5>
-                    <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+                    <h2 class="center brown-text"><i class="material-icons">assessment</i></h2>
+                    <h5 class="center">Controle seus jogos</h5>
+
+                    <p class="light">Acompanhe suas apostas se prepara que comprar aquele jetski dos seus sonhos.</p>
                 </div>
             </div>
-            <div class="col s12 m4">
-                <div class="icon-block">
-                    <h2 class="center brown-text"><i class="material-icons">group</i></h2>
-                    <h5 class="center">User Experience Focused</h5>
-                    <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
-                </div>
-            </div>
-            <div class="col s12 m4">
+
+            <div class="col s12 m6">
                 <div class="icon-block">
                     <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
-                    <h5 class="center">Easy to work with</h5>
-                    <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+                    <h5 class="center">Configurações</h5>
+
+                    <p class="light">Configure coisas inúteis que não fazem nada, em momento algum e com nenhuma
+                        finalidade.</p>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
-<div class="parallax-container valign-wrapper">
-    <div class="section no-pad-bot">
-        <div class="container">
-            <div class="row center">
-                <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
-            </div>
-        </div>
-    </div>
-    <div class="parallax"><img src="public/background2.jpg" alt="Unsplashed background img 2"></div>
-</div>
-<div class="container">
-    <div class="section">
-        <div class="row">
-            <div class="col s12 center">
-                <h3><i class="mdi-content-send brown-text"></i></h3>
-                <h4>Contact Us</h4>
-                <p class="left-align light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="parallax-container valign-wrapper">
-    <div class="section no-pad-bot">
-        <div class="container">
-            <div class="row center">
-                <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
-            </div>
-        </div>
-    </div>
-    <div class="parallax"><img src="public/background3.jpg" alt="Unsplashed background img 3"></div>
-</div>
+
 <footer class="page-footer teal">
     <div class="container">
         <div class="row">
             <div class="col l6 s12">
                 <h5 class="white-text">Company Bio</h5>
-                <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+                <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's
+                    our full time job. Any amount would help support and continue development on this project and is
+                    greatly appreciated.</p>
             </div>
             <div class="col l3 s12">
                 <h5 class="white-text">Settings</h5>
@@ -156,9 +120,12 @@
         </div>
     </div>
 </footer>
+
 <!--  Scripts-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="public/js/materialize.js"></script>
-<script src="public/js/init.js"></script>
+<script src="js/materialize.js"></script>
+<script src="js/init.js"></script>
+
 </body>
 </html>

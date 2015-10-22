@@ -1,0 +1,6 @@
+{ 
+	"engines": { "node": "4.0.0" },
+	"scripts": {
+	    "preinstall": "bower install --allow-root"
+	}
+}
