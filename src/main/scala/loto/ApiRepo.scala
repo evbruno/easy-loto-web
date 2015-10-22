@@ -60,15 +60,18 @@ trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirective
 		} ~ path("main2") {
 			getFromResource("public/main_old.html")
 		} ~
-			pathPrefix("css") {
-				getFromResourceDirectory("public/css")
-			} ~
-			pathPrefix("font") {
-				getFromResourceDirectory("public/font")
-			} ~
-			pathPrefix("js") {
-				getFromResourceDirectory("public/js")
-			}
+		pathPrefix("css") {
+			getFromResourceDirectory("public/css")
+		} ~
+		pathPrefix("font") {
+			getFromResourceDirectory("public/font")
+		} ~
+		pathPrefix("js") {
+			getFromResourceDirectory("public/js")
+		} ~
+		pathPrefix("assets") {
+			getFromResourceDirectory("www/app/vendor")
+		}
 	}
 }
 

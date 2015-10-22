@@ -18,3 +18,7 @@ project/plugins/project/
 
 # IntelliJ specific
 .idea
+
+node_modules
+
+**/www/app/vendor/*

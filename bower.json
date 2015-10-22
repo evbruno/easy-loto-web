@@ -1,5 +1,8 @@
 {
-  "name" : "easy-loto",
-  "description": "EasyLoto Web",
-  "license": "MIT"
+    "name": "easy-loto",
+    "description": "EasyLoto Web",
+    "license": "MIT",
+    "dependencies": {
+        "jquery": "2.1.4"
+    }
 }
