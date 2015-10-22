@@ -1,6 +1,11 @@
-{ 
-	"engines": { "node": "4.0.0" },
-	"scripts": {
-	    "preinstall": "bower install --allow-root"
-	}
+{
+    "devDependencies": {
+        "bower": "^1.5.3"
+    },
+    "engines": {
+        "node": "4.0.0"
+    },
+    "scripts": {
+        "postinstall": "bower install"
+    }
 }
