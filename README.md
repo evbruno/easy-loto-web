@@ -39,4 +39,5 @@ $ heroku buildpacks:clear -a easy-loto-dev
 $ heroku buildpacks:add https://github.com/heroku/heroku-buildpack-nodejs.git -a easy-loto-dev
 $ heroku buildpacks:add https://github.com/heroku/heroku-buildpack-scala.git -a easy-loto-dev
 $ heroku buildpacks -a easy-loto-dev
+$ heroku config:set NPM_CONFIG_LOGLEVEL=verbose -a easy-loto-dev
 ```
