@@ -3,8 +3,10 @@
     "description": "EasyLoto Web",
     "license": "MIT",
     "dependencies": {
-        "jquery": "2.1.4",
-        "knockout": "3.3.0",
-        "requirejs": "2.1.20"
+        "jquery"					:	"2.1.4",
+        "knockout"				:	"3.3.0",
+        "requirejs"				:	"2.1.20",
+        "requirejs-text"	: "2.0.14",
+        "sammy" 					:	"0.7.6"
     }
 }

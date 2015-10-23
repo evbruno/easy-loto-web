@@ -16,4 +16,11 @@
 
         <button data-bind="text: actionText, click: action"></button>
     </body>
+    <hr />
+
+    <p>PageComponent: <strong data-bind="text: pageComponent"></strong></p>
+
+    <div class="main" data-bind="component: {name: pageComponent, params: pageParams}"></div>
+
+
 </html>
