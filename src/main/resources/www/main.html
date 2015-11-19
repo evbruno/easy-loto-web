@@ -1,26 +1,200 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>My Sample Project</title>
-        <!-- data-main attribute tells require.js to load
-             scripts/main.js after require.js loads. -->
-        <script data-main="lib/main" src="lib/vendor/requirejs/require.js"></script>
-    </head>
-    <body>
-        <h1>My Sample Project</h1>
-        <p>
-        	Hello World now:
-        	[ <em data-bind="text: helloCount"></em> ]
-        	<strong data-bind="text: helloMsg"/></strong>
-        </p>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>Easy_Loto</title>
+    <!-- CSS  -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.3/css/materialize.min.css">
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen,projection"/>
+    <link rel="icon" type="image/png" href="img/favicon.png" />
 
-        <button data-bind="text: actionText, click: action"></button>
-    </body>
-    <hr />
+</head>
+<body>
 
-    <p>PageComponent: <strong data-bind="text: pageComponent"></strong></p>
+<div class="navbar-fixed">
+    <nav class="blue-grey darken-2 z-depth-2" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="#" class="brand-logo blue-grey-text ">Ea$yLoto</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="#">Lotofácil</a></li>
+                <li class="active"><a href="#">Megasena</a></li>
+                <li><a href="#" title="Apostas"><i class="material-icons">assessment</i></a></li>
+                <li><a href="#" title="Configs"><i class="material-icons">settings</i></a></li>
+            </ul>
+            <ul id="nav-mobile" class="side-nav">
+                <li><a href="#">Lotofácil</a></li>
+                <li class="active"><a href="#">Megasena</a></li>
+                <li><a href="#">Apostas</a></li>
+                <li><a href="#">Configurações</a></li>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+</div>
 
-    <div class="main" data-bind="component: {name: pageComponent, params: pageParams}"></div>
+<div id="index-banner">
+    <div class="section no-pad-bot">
+        <div class="container">
+            <h1 class="header center teal-text text-lighten-2">Easy Loto</h1>
+
+            <p>Nome: <strong data-bind="text: now"></strong>.</p>
+        </div>
+    </div>
+</div>
 
 
+<div class="container" class="parallax-container">
+    <div class="section">
+        <div class="row">
+
+            <div class="col s12 m6">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title black-text">Sorteios</span>
+
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+
+                        <!--<pre data-bind="text: ko.toJSON($root.currentDraw, null, 2)"></pre>-->
+
+                        <table class="bordered responsive-table highlight">
+                            <thead>
+                            <tr>
+                                <th>Jogo</th>
+                                <th>Números</th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: lotofacil">
+                            <tr data-bind="css: { 'teal lighten-4' : $parent.currentDraw() == $data }" style="cursor: hand">
+                                <td>
+                                    <span data-bind="text: draw, click: $parent.updateCurrentDraw($data)" class="waves-effect waves-teal"></span>
+                                </td>
+                                <td data-bind="text: numbers"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <ul class="pagination">
+                                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                                <li class="active"><a href="#!">1</a></li>
+                                <li class="waves-effect"><a href="#!">2</a></li>
+                                <li class="waves-effect"><a href="#!">3</a></li>
+                                <li class="waves-effect"><a href="#!">4</a></li>
+                                <li class="waves-effect"><a href="#!">5</a></li>
+                                <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="card-action">
+                        <a href="#">This is a link</a>
+                        <a href="#">This is a link</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 m6">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title black-text">Acertos</span>
+
+                        <table class="bordered striped centered">
+                            <tbody>
+                            <!-- ko foreach: { data: lotofacilGrid, as: 'row' } -->
+                            <tr>
+                                <!-- ko foreach: { data: row, as: 'col' } -->
+                                <td data-bind="text: col"></td>
+                                <!-- /ko -->
+                            </tr>
+                            <!-- /ko -->
+                            </tbody>
+                        </table>
+
+                        <div>
+                            <ul class="pagination">
+                                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                                <li class="active"><a href="#!">1</a></li>
+                                <li class="waves-effect"><a href="#!">2</a></li>
+                                <li class="waves-effect"><a href="#!">3</a></li>
+                                <li class="waves-effect"><a href="#!">4</a></li>
+                                <li class="waves-effect"><a href="#!">5</a></li>
+                                <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col s12 m6">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">assessment</i></h2>
+                    <h5 class="center">Controle seus jogos</h5>
+
+                    <p class="light">Acompanhe suas apostas se prepara que comprar aquele jetski dos seus sonhos.</p>
+                </div>
+            </div>
+
+            <div class="col s12 m6">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
+                    <h5 class="center">Configurações</h5>
+
+                    <p class="light">Configure coisas inúteis que não fazem nada, em momento algum e com nenhuma
+                        finalidade.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<footer class="page-footer teal">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Company Bio</h5>
+
+                <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's
+                    our full time job. Any amount would help support and continue development on this project and is
+                    greatly appreciated.</p>
+            </div>
+            <div class="col l3 s12">
+                <h5 class="white-text">Settings</h5>
+                <ul>
+                    <li><a class="white-text" href="#!">Link 1</a></li>
+                    <li><a class="white-text" href="#!">Link 2</a></li>
+                    <li><a class="white-text" href="#!">Link 3</a></li>
+                    <li><a class="white-text" href="#!">Link 4</a></li>
+                </ul>
+            </div>
+            <div class="col l3 s12">
+                <h5 class="white-text">Connect</h5>
+                <ul>
+                    <li><a class="white-text" href="#!">Link 1</a></li>
+                    <li><a class="white-text" href="#!">Link 2</a></li>
+                    <li><a class="white-text" href="#!">Link 3</a></li>
+                    <li><a class="white-text" href="#!">Link 4</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            Made by <a class="brown-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+        </div>
+    </div>
+</footer>
+
+<!--  Scripts-->
+<script data-main="lib/main" src="lib/vendor/requirejs/require.js"></script>
+
+</body>
 </html>

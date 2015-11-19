@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Sample Project</title>
+        <!-- data-main attribute tells require.js to load
+             scripts/main.js after require.js loads. -->
+        <script data-main="lib/main" src="lib/vendor/requirejs/require.js"></script>
+    </head>
+    <body>
+        <h1>My Sample Project</h1>
+        <p>
+        	Hello World now:
+        	[ <em data-bind="text: helloCount"></em> ]
+        	<strong data-bind="text: helloMsg"/></strong>
+        </p>
+
+        <button data-bind="text: actionText, click: action"></button>
+    </body>
+    <hr />
+
+    <p>PageComponent: <strong data-bind="text: pageComponent"></strong></p>
+
+    <div class="main" data-bind="component: {name: pageComponent, params: pageParams}"></div>
+
+
+</html>

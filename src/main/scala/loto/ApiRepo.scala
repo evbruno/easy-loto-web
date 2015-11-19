@@ -2,14 +2,15 @@ package loto
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.headers._
+import akka.http.scaladsl.server.Directives
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.directives.{MiscDirectives, RespondWithDirectives}
+import akka.http.scaladsl.server.directives.{Credentials, MiscDirectives, RespondWithDirectives}
 import com.mongodb.casbah.Imports._
 
 import scala.concurrent.Future
 
 
-trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirectives {
+trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirectives with LotoLogger {
 
 	import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 	import spray.json._
@@ -43,7 +44,7 @@ trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirective
 				(get & path("lotofacil") & encodeResponse & respondWithHeader(`Access-Control-Allow-Origin`.`*`)) { // encodeResponseWith(Gzip)
 				//complete { bets	}
 //				onSuccess(resultsF) { r => complete(r.toJson) }
-					onSuccess(resultsF) { r => complete(r.take(20).toJson)	}
+					onSuccess(resultsF) { r => complete(r.take(5).toJson)	}
 			} ~
 				(get & path("lotofacil" / "bets")) {
 					onSuccess(betsF) { b => complete(b.toJson) }
@@ -54,28 +55,62 @@ trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirective
 		}
 	}
 
+	def myUserPassAuthenticator2(credentials: Credentials): Future[Option[String]] =
+		credentials match {
+			case p@Credentials.Provided(id) => {
+				Future {
+					if (p.verify("jerry") && id == "tom") Some(id)
+					else None
+				}
+			}
+			case _ => Future { None }
+		}
+
+	def myUserPassAuthenticator(credentials: Credentials): Option[String] =
+		credentials match {
+			case p@Credentials.Provided(id) if p.verify("p4ssw0rd") => Some(id)
+			case _ => None
+		}
+
+
 	val staticFilesRoute = {
 		path("main") {
-			getFromResource("public/main.html")
+			getFromResource("www/main.html")
 		} ~ path("main2") {
-			getFromResource("public/main_old.html")
+			getFromResource("www/main_old.html")
 		} ~
 		pathPrefix("css") {
-			getFromResourceDirectory("public/css")
+			getFromResourceDirectory("www/css")
 		} ~
 		pathPrefix("font") {
-			getFromResourceDirectory("public/font")
+			getFromResourceDirectory("www/font")
 		} ~
 		pathPrefix("js") {
-			getFromResourceDirectory("public/js")
+			getFromResourceDirectory("www/js")
 		} ~
 		// 
 		pathPrefix("lib") {
 			getFromResourceDirectory("www/lib")
 		} ~
+		pathPrefix("lotofacil") {
+			getFromResourceDirectory("www/lotofacil")
+		} ~
 		path("mainr") {
-			getFromResource("www/main.html")
+			getFromResource("www_require/main.html")
+		} ~
+		path("secure") {
+			authenticateBasic("EasyLoto domains", myUserPassAuthenticator) { username =>
+				complete(s"Done $username")
+			}
+		} ~
+		path("secure2") {
+			authenticateBasicAsync("EasyLoto domains", myUserPassAuthenticator2) { username =>
+				complete(s"Well Done $username")
+			}
 		}
+
+		// % curl http://localhost:9000/secure --user tomcat:p4ssw0rd
+		// % curl http://localhost:9000/secure2 --user tom:jerry
 	}
 }
 
