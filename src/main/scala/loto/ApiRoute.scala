@@ -84,7 +84,9 @@ trait ApiRoute extends BetProtocols with MiscDirectives with RespondWithDirectiv
 		pathPrefix("js") {
 			getFromResourceDirectory("www/js")
 		} ~
-		// 
+		pathPrefix("img") {
+			getFromResourceDirectory("www/img")
+		} ~
 		pathPrefix("lib") {
 			getFromResourceDirectory("www/lib")
 		} ~

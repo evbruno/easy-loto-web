@@ -53,3 +53,14 @@ code {
     vertical-align: middle !important;
     font-size: 1.2em;
 }
+
+.please-wait-r {
+    background-image: url("/img/wait.gif");
+    background-repeat: no-repeat;
+    background-position: right;
+    padding-right: 21px;
+}
+
+.please-wait-r i {
+    font-size: 0.9em;
+}

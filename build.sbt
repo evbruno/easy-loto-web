@@ -14,7 +14,7 @@ scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8", "-Xlint"
 //fork in run := true
 
 libraryDependencies ++= {
-	val akkaV = "2.3.12"
+	val akkaV = "2.3.14"
 //	val akkaStreamV = "1.0"
 	val akkaStreamV = "2.0-M2"
 	val scalaTestV = "2.2.5"

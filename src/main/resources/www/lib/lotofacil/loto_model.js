@@ -21,6 +21,8 @@ define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'ap
             return self.currentDraw().draw;
         });
 
+        self.isLotoLoading = ko.observable(false);
+
         self.bets = ko.observableArray();
 
         self.lotofacilHitsOk = ko.observable(0);
@@ -65,6 +67,7 @@ define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'ap
         }, this);
 
         self.getLoto = function() {
+            self.isLotoLoading(true);
             $.when(api.getLotofacil()).done(function (data) {
                 self.lotofacil.removeAll();
                 var dataArr = [];
@@ -78,6 +81,7 @@ define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'ap
                 if (dataArr.length > 0)
                     self.updateCurrentDraw(dataArr[0]);
 
+                self.isLotoLoading(false);
             });
         };
 
