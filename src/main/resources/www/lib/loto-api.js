@@ -1,14 +1,19 @@
 define(
-	['knockout'],
+	['jquery'],
 
-	function (ko) {
-    return {
-        getHello: function () {
-        		//console.log("jquery " + jq);
-        		console.log("knockout " + ko);
-        		
-            return 'Hello World ' + new Date();
-        }
-    };
+	function ($) {
+        return {
+            getLotofacil: function() {
+                return $.getJSON("http://127.0.0.1:9000/api/lotofacil");
+            },
+
+            getLotofacilBets: function(concurso) {
+                return $.getJSON("http://127.0.0.1:9000/api/lotofacil/" + concurso + "/bets");
+            },
+
+            getHello: function () {
+                return 'Hello World ' + new Date();
+            }
+        };
 
 });

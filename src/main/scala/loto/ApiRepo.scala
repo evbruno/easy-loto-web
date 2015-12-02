@@ -22,8 +22,9 @@ trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirective
 	import ApiRepo._
 	import system.dispatcher
 
-	def betsF = Future {
-		bets
+	def betsF(d: Int) = Future {
+		println(s"getting bets for $d")
+		betsFor(d)
 	}
 
 	def resultsF = Future {
@@ -35,23 +36,25 @@ trait ApiRepo extends BetProtocols with MiscDirectives with RespondWithDirective
 	}
 
 	val apiRoute = logRequestResult("easy-loto-api") {
-		pathPrefix("api") {
+		(pathPrefix("api") & respondWithHeader(`Access-Control-Allow-Origin`.`*`)) {  // encodeResponseWith(Gzip)
+
 			(get & path("ping")) {
 				complete {
 					"pong"
 				}
 			} ~
-				(get & path("lotofacil") & encodeResponse & respondWithHeader(`Access-Control-Allow-Origin`.`*`)) { // encodeResponseWith(Gzip)
+				(get & path("lotofacil") & encodeResponse) {
 				//complete { bets	}
 //				onSuccess(resultsF) { r => complete(r.toJson) }
 					onSuccess(resultsF) { r => complete(r.take(5).toJson)	}
 			} ~
-				(get & path("lotofacil" / "bets")) {
-					onSuccess(betsF) { b => complete(b.toJson) }
-			} ~
 				(get & path("lotofacil" / "hits")) {
 					onSuccess(hitsF) { h => complete(h.toJson) }
+			} ~
+				(get & path("lotofacil" / IntNumber / "bets")) { drawNumber =>
+					onSuccess(betsF(drawNumber)) { h => complete(h.toJson) }
 			}
+
 		}
 	}
 
@@ -124,6 +127,7 @@ object ApiRepo {
 	val db = mongoClient(mongoClientURI.database.get)
 
 	val resultados = db("resultados")
+	val lotofacilBets = db("lotofacil_bets")
 
 	def close() = mongoClient.close()
 
@@ -133,19 +137,33 @@ object ApiRepo {
 		Result(draw = doc.as[Int]("concurso"), numbers = doc.as[List[Int]]("aposta"))).toList
 	}
 
+	def betsFor(draw: Int) : List[Bet] = {
+		val query = MongoDBObject(
+						"from" -> MongoDBObject("$lte" -> draw),
+						"to" -> MongoDBObject("$gte" -> draw)
+					)
 
-	//	lazy val results = (1 to 10).map(c => Result(c, c to 14+c)).toList
+		(for {
+					doc <- lotofacilBets.find(query)
+					numbers <- doc.as[List[BasicDBList]]("numbers")
+				} yield Bet(numbers.map(_.asInstanceOf[Double].toInt).toList)).toList
+	}
 
-	lazy val bets: List[Bet] = (7 to 10).map(c => Bet(c to 14 + c)).toList
-	lazy val hits: List[BetHit] = bets.flatMap(b => results.map(r => BetHit(b, r)))
+
+	lazy val hits: List[BetHit] = List() // bets.flatMap(b => results.map(r => BetHit(b, r)))
 
 }
 
 //object ApiRepoApp extends App {
 //
-//	val r = ApiRepo.results
-//	ApiRepo.close
+////	val r = ApiRepo.results
+////
+////	println(s"Last: ${r.head}")
+////	println(s"First: ${r.last}")
 //
-//	println(s"Last: ${r.head}")
-//	println(s"First: ${r.last}")
+//	val x = ApiRepo.betsFor2(1300)
+//
+//	println(s"x=$x")
+//
+//	ApiRepo.close
 //}

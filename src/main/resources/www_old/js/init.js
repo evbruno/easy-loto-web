@@ -10,7 +10,7 @@
 
 			self.now = ko.observable(new Date());
 			self.lotofacil = ko.observableArray();
-			self.lotofacilHits = ko.observableArray([2, 3, 5, 7, 8, 10, 12, 14, 15, 16, 17, 19, 22, 23, 25]);
+			self.bets = ko.observableArray([2, 3, 5, 7, 8, 10, 12, 14, 15, 16, 17, 19, 22, 23, 25]);
 			self.currentDraw = ko.observable(null);
 
 			self.lotofacilGrid = ko.pureComputed(function(){

@@ -1,0 +1,94 @@
+<!--<div class="page-header" id="banner">-->
+
+<!--<h3 class="header">-->
+<!--<span class="mdi-image-tag-faces mdi-material-red"></span>-->
+<!--Loto Fácil-->
+<!--</h3>-->
+
+<!--</div>-->
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-primary panel-loto">
+            <div class="panel-heading">
+                Lotofácil Jogos
+            </div>
+            <div class="panel-body">
+
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th width="1">Jogo</th>
+                        <th>Números</th>
+                    </tr>
+                    </thead>
+                    <tbody data-bind="foreach: lotofacil">
+                    <tr data-bind="css: { 'info' : $parent.currentDraw() == $data }">
+                        <td>
+                            <span data-bind="text: draw, click: $parent.updateCurrentDraw"
+                                  class="btn btn-sm btn-default">
+                            </span>
+                        </td>
+                        <td class="numbers" data-bind="text: numbersStr"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Acertos (<strong data-bind="text: numeroDoJogoAtual"></strong>)</div>
+            <div class="panel-body">
+
+                <table class="table table-bordered table-condensed">
+                    <tbody>
+                    <!-- ko foreach: { data: lotofacilGrid, as: 'row' } -->
+                    <tr>
+                        <!-- ko foreach: { data: row, as: 'col' } -->
+                        <td data-bind="text: col,
+                                        css: {
+                                            'info' : $parents[1].isMissHit(col),
+                                            'success' : $parents[1].isHit(col),
+                                            'danger' : $parents[1].isWrongGuess(col)}" class="numbers-hit"></td>
+                        <!-- /ko -->
+                    </tr>
+                    <!-- /ko -->
+                    </tbody>
+                </table>
+
+                <div>
+                    <p>Acertos <span class="label label-success" data-bind="text: lotofacilHitsOk"></span></p>
+
+                    <div class="alert alert-dismissible alert-warning" data-bind="visible: bets().length == 0">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>Oh snap!</strong>
+                        Nenhuma aposta encontrada para o jogo <span data-bind="text: numeroDoJogoAtual"></span>.
+                    </div>
+
+                    <div class="panel panel-primary" data-bind="visible: bets().length > 0">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Minhas Apostas</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div data-bind="foreach: bets">
+                                <div class="radio radio-primary">
+                                    <label>
+                                        <input type="radio" name="betRadio"
+                                               data-bind="attr: {value: name}, checked: $parent.currentBetValue">
+                                        <strong data-bind="text: $data.name"></strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
