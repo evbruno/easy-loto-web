@@ -34,9 +34,9 @@ object ApiRepo {
 					)
 
 		(for {
-					doc <- dbBets.find(query)
-					numbers <- doc.as[List[BasicDBList]]("numbers")
-				} yield Bet(numbers.map(_.asInstanceOf[Double].toInt).toList)).toList
+			doc <- dbBets.find(query)
+			numbers <- doc.as[List[BasicDBList]]("numbers")
+		} yield Bet(numbers.map(_.toString.toDouble.toInt).toList)).toList
 	}
 
 	def lastConcurso: Int = {
