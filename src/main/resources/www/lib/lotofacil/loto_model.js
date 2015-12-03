@@ -16,16 +16,24 @@ define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'ap
 
         self.lotofacil = ko.observableArray();
         self.currentDraw = ko.observable(null);
-        self.numeroDoJogoAtual = ko.pureComputed(function(){
-           if (!self.currentDraw()) return "";
-            return self.currentDraw().draw;
-        });
+        //self.numeroDoJogoAtual = ko.pureComputed(function(){
+        //   if (!self.currentDraw()) return "";
+        //    return self.currentDraw().draw;
+        //});
 
         self.isLotoLoading = ko.observable(false);
 
         self.bets = ko.observableArray();
 
         self.lotofacilHitsOk = ko.observable(0);
+
+        self.lotofacilCurrentPrize = ko.pureComputed(function() {
+            if (!self.currentBet() || !self.currentDraw() || !self.lotofacilHitsOk() || self.lotofacilHitsOk() < 10)
+                return "0,00";
+
+            var idx = 15 - self.lotofacilHitsOk();
+            return self.currentDraw().prizes[idx][1];
+        });
 
         self.lotofacilGrid = ko.pureComputed(function(){
             var r = [];

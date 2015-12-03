@@ -30,10 +30,6 @@ trait ApiRoute extends BetProtocols with MiscDirectives with RespondWithDirectiv
 		results
 	}
 
-	def hitsF = Future {
-		hits
-	}
-
 	val apiRoute = logRequestResult("easy-loto-api") {
 		(pathPrefix("api") & respondWithHeader(`Access-Control-Allow-Origin`.`*`)) {  // encodeResponseWith(Gzip)
 
@@ -42,9 +38,6 @@ trait ApiRoute extends BetProtocols with MiscDirectives with RespondWithDirectiv
 			} ~
 				(get & path("lotofacil") & encodeResponse) {
 					onSuccess(resultsF) { r => complete(r.take(5).toJson)	}
-			} ~
-				(get & path("lotofacil" / "hits")) {
-					onSuccess(hitsF) { h => complete(h.toJson) }
 			} ~
 				(get & path("lotofacil" / IntNumber / "bets")) { drawNumber =>
 					onSuccess(betsF(drawNumber)) { h => complete(h.toJson) }
@@ -111,19 +104,3 @@ trait ApiRoute extends BetProtocols with MiscDirectives with RespondWithDirectiv
 		// % curl http://localhost:9000/secure2 --user tom:jerry
 	}
 }
-
-
-
-//object ApiRepoApp extends App {
-//
-////	val r = ApiRepo.results
-////
-////	println(s"Last: ${r.head}")
-////	println(s"First: ${r.last}")
-//
-//	val x = ApiRepo.betsFor2(1300)
-//
-//	println(s"x=$x")
-//
-//	ApiRepo.close
-//}

@@ -33,8 +33,32 @@
 
     <div class="col-md-6">
         <div class="panel panel-primary">
-            <div class="panel-heading">Acertos (<strong data-bind="text: numeroDoJogoAtual"></strong>)</div>
+            <div class="panel-heading">Acertos</div>
             <div class="panel-body">
+
+                <div data-bind="with: currentDraw">
+                    <div class="col-md-3">
+                        <p>Jogo: <strong data-bind="text: draw"></strong></p>
+                        <p>Sorteio: <strong data-bind="text: drawDate"></strong></p>
+                    </div>
+                    <div class="col-md-9">
+                        <table class="table table-condensed">
+                            <tr>
+                                <th>#</th>
+                                <!-- ko foreach: prizes -->
+                                <td data-bind="text: $data[0]"></td>
+                                <!-- /ko -->
+                            </tr>
+                            <tr>
+                                <th>R$</th>
+                                <!-- ko foreach: prizes -->
+                                <td data-bind="text: $data[1]"></td>
+                                <!-- /ko -->
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
 
                 <table class="table table-bordered table-condensed">
                     <tbody>
@@ -55,10 +79,31 @@
                 <div>
                     <p>Acertos <span class="label label-success" data-bind="text: lotofacilHitsOk"></span></p>
 
+
+                    <div class="list-group" data-bind="visible: lotofacilHitsOk() >= 11">
+
+                        <div class="list-group-item">
+                            <div class="row-picture">
+                                <img class="circle"
+                                     src="http://3.bp.blogspot.com/-w4UvuVbbZbM/ViqBmhyZcAI/AAAAAAAA0fA/vWUFwdRgb_4/s320/Tio-Patinhas%2BE%2Bfamilia%2B%25286%2529.png"
+                                     alt="lotofacil premio"/>
+                            </div>
+                            <div class="row-content">
+                                <h4 class="list-group-item-heading">Uuuuuuhhhhhh \m/</h4>
+
+                                <p class="list-group-item-text">
+                                    Você fez <strong data-bind="text: lotofacilHitsOk">11</strong> acertos
+                                    e ganhou R$ <strong data-bind="text: lotofacilCurrentPrize">4,00</strong>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
                     <div class="alert alert-dismissible alert-warning" data-bind="visible: bets().length == 0">
                         <button type="button" class="close" data-dismiss="alert">×</button>
                         <strong>Oh snap!</strong>
-                        Nenhuma aposta encontrada para o jogo <span data-bind="text: numeroDoJogoAtual"></span>.
+                        Nenhuma aposta encontrada para o jogo.
                     </div>
 
                     <div class="panel panel-primary" data-bind="visible: bets().length > 0">

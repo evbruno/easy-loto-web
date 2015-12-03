@@ -15,7 +15,7 @@ object LotoFacilJob extends App with loto.LotoLogger {
 
 	ApiRepo.updateJobExecution(resultados.size)
 	
-	val last = ApiRepo.lastConcurso
+	val last = ApiRepo.lastDraw
 	
 	if (last == resultados.last.draw)
 		info("Records are on date. Nothing else to do...")

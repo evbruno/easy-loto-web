@@ -3,10 +3,10 @@ package object loto {
 
 	type Numbers = IndexedSeq[Int]
 
-	type DateTime = org.joda.time.DateTime
+	type Prize = (Int, String)
 
 	import scala.language.implicitConversions
 
-	implicit def fromLitToIndexedSeq(in: List[Int]) : Numbers = in.toIndexedSeq
+	implicit def fromListToIndexedSeq(in: List[Int]) : Numbers = in.toIndexedSeq
 
 }

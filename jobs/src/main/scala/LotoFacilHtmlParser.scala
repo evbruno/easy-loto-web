@@ -9,38 +9,52 @@ import scala.collection.mutable.ArrayBuffer
 class LotoFacilHtmlParser(fileName: String) extends loto.LotoLogger {
 
 	line
-	info(s"Arquivo para parser: $fileName")
+	info(s"File to parser: $fileName")
 
 	lazy val browser = new Browser
 	lazy val doc = browser.parseFile(fileName)
-	
-	type Linha = Seq[String]
-	type BufferDeLinhas = scala.collection.mutable.ArrayBuffer[Linha]
 
-	private def parseLinhas: BufferDeLinhas = {
+	type Line = Seq[String]
+	type LineBuff = scala.collection.mutable.ArrayBuffer[Line]
+
+	private def parseLines: LineBuff = {
 
 		val trs = doc >> extractor("tr", asIs)
-		info(s"Total de 'trs': ${trs.size}")
+		info(s"Count 'trs': ${trs.size}")
 
-		var linhas = new BufferDeLinhas()
-		
+		var lines = new LineBuff()
+
 		trs.foreach { tr =>
-			val tds: Linha = tr >> "td"
+			val tds: Line = tr >> "td"
 			if (tds.size > 30)
-				linhas += tds
+				lines += tds
 		}
-		
-		linhas
+
+		lines
 	}
-	
+
 	def parse: ArrayBuffer[Result] = {
-		parseLinhas.map { linhas =>
-			val aposta = linhas.slice(2, 17).map(_.toInt).sorted.toIndexedSeq
-			val concurso = linhas(0).toInt
-			Result(concurso, aposta)
+		parseLines.map { line =>
+			val numbers = line.slice(2, 17).map(_.toInt).sorted.toIndexedSeq
+			val draw = line(0).toInt
+			val date = line(1)
+			val prizes = (15 -> line(25)) ::
+				(14 -> line(26)) ::
+				(13 -> line(27)) ::
+				(12 -> line(28)) ::
+				(11 -> line(29)) :: Nil
+
+			Result(draw = draw, numbers = numbers, drawDate = date, prizes = prizes)
 		}
 	}
 
 }
-	
-	
+
+//object Spike extends App {
+//
+//	val p = new LotoFacilHtmlParser("/tmp/D_LOTFAC.HTM")
+//	val r = p.parse
+//
+//	println(r)
+//
+//}
