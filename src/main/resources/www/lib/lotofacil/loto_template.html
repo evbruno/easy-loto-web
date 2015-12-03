@@ -33,12 +33,13 @@
 
     <div class="col-md-6">
         <div class="panel panel-primary">
-            <div class="panel-heading">Acertos</div>
+            <div class="panel-heading">Jogo Atual</div>
             <div class="panel-body">
 
                 <div data-bind="with: currentDraw">
                     <div class="col-md-3">
                         <p>Jogo: <strong data-bind="text: draw"></strong></p>
+
                         <p>Sorteio: <strong data-bind="text: drawDate"></strong></p>
                     </div>
                     <div class="col-md-9">
@@ -111,22 +112,39 @@
                             <h3 class="panel-title">Minhas Apostas</h3>
                         </div>
                         <div class="panel-body">
-                            <div data-bind="foreach: bets">
-                                <div class="radio radio-primary">
-                                    <label>
-                                        <input type="radio" name="betRadio"
-                                               data-bind="attr: {value: name}, checked: $parent.currentBetValue">
-                                        <strong data-bind="text: $data.name"></strong>
-                                    </label>
-                                </div>
-                            </div>
+
+                            <table class="table table-condensed table-responsive">
+                                <tr>
+                                    <th></th>
+                                    <th>Owner</th>
+                                    <th>#</th>
+                                </tr>
+
+                                <!-- ko foreach: bets -->
+                                <tr>
+                                    <td>
+                                        <!-- ko if: $parent.currentBet() == $data -->
+                                            <i class="material-icons small">label</i>
+                                        <!-- /ko -->
+                                        <!-- ko if: $parent.currentBet() != $data -->
+                                            <a data-bind="click: $parent.updateCurrentBet" href="#/loto">
+                                                <i class="material-icons small">label_outline</i>
+                                            </a>
+                                        <!-- /ko -->
+                                    </td>
+                                    <td><a data-bind="text: $data.owner, attr: { href: '#/loto/bets/' + $data.owner }"></a></td>
+                                    <td><span data-bind="text: $data.numbers"></span></td>
+                                </tr>
+                                <!-- /ko -->
+
+                            </table>
                         </div>
+
                     </div>
 
-                </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>

@@ -52,10 +52,12 @@ object ApiRepo {
 					("to" $gte draw) ++
 					("source" $eq LOTO)
 
-		(for {
-			doc <- dbBets.find(query)
-			numbers <- doc.as[List[BasicDBList]]("numbers")
-		} yield Bet(extractNumbers(numbers))).toList
+		(
+			for {
+				doc <- dbBets.find(query)
+				numbers <- doc.as[List[BasicDBList]]("numbers")
+			} yield Bet(numbers = extractNumbers(numbers), owner = Some(doc.as[String]("key")))
+		).toList
 	}
 
 	private def extractNumbers(doc: BasicDBList) : Numbers = {
@@ -97,7 +99,7 @@ object ApiRepo {
 	}
 
 }
-
+//
 //object ApiRepoApp extends App {
 //
 ////	val r = ApiRepo.results

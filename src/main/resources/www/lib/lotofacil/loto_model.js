@@ -16,14 +16,8 @@ define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'ap
 
         self.lotofacil = ko.observableArray();
         self.currentDraw = ko.observable(null);
-        //self.numeroDoJogoAtual = ko.pureComputed(function(){
-        //   if (!self.currentDraw()) return "";
-        //    return self.currentDraw().draw;
-        //});
 
         self.isLotoLoading = ko.observable(false);
-
-        self.bets = ko.observableArray();
 
         self.lotofacilHitsOk = ko.observable(0);
 
@@ -48,31 +42,18 @@ define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'ap
 
         self.isMissHit = function(val) {
             if (! self.currentDraw() || ! self.currentBet()) return false;
-            return self.currentDraw().numbers.indexOf(val) >= 0 && self.currentBet.indexOf(val) < 0;
+            return self.currentDraw().numbers.indexOf(val) >= 0 && self.currentBet().numbers.indexOf(val) < 0;
         };
 
         self.isHit = function(val) {
             if (! self.currentDraw() || ! self.currentBet()) return false;
-            return self.currentDraw().numbers.indexOf(val) >= 0 && self.currentBet.indexOf(val) >= 0;
+            return self.currentDraw().numbers.indexOf(val) >= 0 && self.currentBet().numbers.indexOf(val) >= 0;
         };
 
         self.isWrongGuess = function(val) {
             if (! self.currentDraw() || ! self.currentBet()) return false;
-            return self.currentDraw().numbers.indexOf(val) < 0 && self.currentBet.indexOf(val) >= 0;
+            return self.currentDraw().numbers.indexOf(val) < 0 && self.currentBet().numbers.indexOf(val) >= 0;
         };
-
-        self.currentBet = ko.observableArray();
-        self.currentBetValue = ko.observable();
-
-        self.currentBetValue.subscribe(function(newValue) {
-            var b = newValue.split(",");
-            var newBet = _(b).map(function(each){ return parseInt(each); });
-
-            var miss = _(self.currentDraw().numbers).difference(newBet);
-            self.lotofacilHitsOk(AMOUNT - miss.length);
-            self.currentBet(newBet);
-
-        }, this);
 
         self.getLoto = function() {
             self.isLotoLoading(true);
@@ -93,22 +74,32 @@ define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'ap
             });
         };
 
+        self.bets = ko.observableArray();
+        self.currentBet = ko.observable();
+        self.updateCurrentBet = function() {
+            var newBet = arguments[0];
+            console.log(newBet);
+            var miss = _(self.currentDraw().numbers).difference(newBet.numbers);
+            self.lotofacilHitsOk(AMOUNT - miss.length);
+            self.currentBet(newBet);
+        };
+
         self.getBets = function(draw) {
             $.when(api.getLotofacilBets(draw)).done(function(data) {
                 self.bets.removeAll();
                 var dataArr = [];
 
-                for (var i = 0; i < data.length; i++)
-                    dataArr.push(new Wrapped(data[i].numbers));
+                for (var i = 0; i < data.length; i++) {
+                    dataArr.push(data[i]);
+                }
 
                 self.bets(dataArr);
 
                 if (dataArr.length > 0)
-                    self.currentBetValue(dataArr[0].name.toString());
+                    self.updateCurrentBet(dataArr[0]);
                 else
-                    self.currentBetValue("-1");
+                    self.updateCurrentBet(null);
             });
-
         };
 
         self.updateCurrentDraw = function() {
