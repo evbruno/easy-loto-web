@@ -37,7 +37,7 @@ trait ApiRoute extends BetProtocols with MiscDirectives with RespondWithDirectiv
 				complete { "pong" }
 			} ~
 				(get & path("lotofacil") & encodeResponse) {
-					onSuccess(resultsF) { r => complete(r.take(5).toJson)	}
+					onSuccess(resultsF) { r => complete(r.take(100).toJson)	}
 			} ~
 				(get & path("lotofacil" / IntNumber / "bets")) { drawNumber =>
 					onSuccess(betsF(drawNumber)) { h => complete(h.toJson) }

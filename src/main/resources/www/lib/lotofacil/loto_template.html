@@ -1,5 +1,9 @@
 <div class="row">
+
+    <!-- Jogos ---------------------------------------------------------------------------------------------------->
+
     <div class="col-md-6">
+
         <div class="panel panel-primary panel-loto">
             <div class="panel-heading">
                 Lotofácil Jogos
@@ -8,14 +12,14 @@
             </div>
             <div class="panel-body">
 
-                <table class="table table-bordered table-condensed">
+                <table class="table table-condensed">
                     <thead>
                     <tr>
                         <th width="1">Jogo</th>
                         <th>Números</th>
                     </tr>
                     </thead>
-                    <tbody data-bind="foreach: lotofacil">
+                    <tbody data-bind="foreach: paginator().getItems">
                     <tr data-bind="css: { 'info' : $parent.currentDraw() == $data }">
                         <td>
                             <span data-bind="text: draw, click: $parent.updateCurrentDraw"
@@ -27,11 +31,29 @@
                     </tbody>
                 </table>
 
+                <div>
+                    <ul class="pager" data-bind="with: paginator">
+                        <li class="previous" data-bind="css: { 'disabled' : ! canGoBack() } ">
+                            <a class="withripple" href="javascript:void(0)" data-bind="click: goBack">← Voltar</a>
+                        </li>
+                        <li class="next" data-bind="css: { 'disabled' : ! canGoForward() } ">
+                            <a class="withripple" href="javascript:void(0)" data-bind="click: goForward">Avançar →</a>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
+
         </div>
+
     </div>
 
+    <!-- /Jogos ------------------------------------------------------------------------------------------------------->
+
     <div class="col-md-6">
+
+        <!-- Jogo Atual ----------------------------------------------------------------------------------------------->
+
         <div class="panel panel-primary">
             <div class="panel-heading">Jogo Atual</div>
             <div class="panel-body">
@@ -77,74 +99,79 @@
                     </tbody>
                 </table>
 
-                <div>
-                    <p>Acertos <span class="label label-success" data-bind="text: lotofacilHitsOk"></span></p>
-
-
-                    <div class="list-group" data-bind="visible: lotofacilHitsOk() >= 11">
-
-                        <div class="list-group-item">
-                            <div class="row-picture">
-                                <img class="circle"
-                                     src="http://3.bp.blogspot.com/-w4UvuVbbZbM/ViqBmhyZcAI/AAAAAAAA0fA/vWUFwdRgb_4/s320/Tio-Patinhas%2BE%2Bfamilia%2B%25286%2529.png"
-                                     alt="lotofacil premio"/>
-                            </div>
-                            <div class="row-content">
-                                <h4 class="list-group-item-heading">Uuuuuuhhhhhh \m/</h4>
-
-                                <p class="list-group-item-text">
-                                    Você fez <strong data-bind="text: lotofacilHitsOk">11</strong> acertos
-                                    e ganhou R$ <strong data-bind="text: lotofacilCurrentPrize">4,00</strong>
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="alert alert-dismissible alert-warning" data-bind="visible: bets().length == 0">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <strong>Oh snap!</strong>
-                        Nenhuma aposta encontrada para o jogo.
-                    </div>
-
-                    <div class="panel panel-primary" data-bind="visible: bets().length > 0">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Minhas Apostas</h3>
-                        </div>
-                        <div class="panel-body">
-
-                            <table class="table table-condensed table-responsive">
-                                <tr>
-                                    <th></th>
-                                    <th>Owner</th>
-                                    <th>#</th>
-                                </tr>
-
-                                <!-- ko foreach: bets -->
-                                <tr>
-                                    <td>
-                                        <!-- ko if: $parent.currentBet() == $data -->
-                                            <i class="material-icons small">label</i>
-                                        <!-- /ko -->
-                                        <!-- ko if: $parent.currentBet() != $data -->
-                                            <a data-bind="click: $parent.updateCurrentBet" href="#/loto">
-                                                <i class="material-icons small">label_outline</i>
-                                            </a>
-                                        <!-- /ko -->
-                                    </td>
-                                    <td><a data-bind="text: $data.owner, attr: { href: '#/loto/bets/' + $data.owner }"></a></td>
-                                    <td><span data-bind="text: $data.numbers"></span></td>
-                                </tr>
-                                <!-- /ko -->
-
-                            </table>
-                        </div>
-
-                    </div>
-
-
-                </div>
             </div>
+
         </div>
 
+        <!-- /Jogo Atual ---------------------------------------------------------------------------------------------->
+
+        <!-- Minhas Apostas ------------------------------------------------------------------------------------------->
+
+        <div class="alert alert-dismissible alert-warning" data-bind="visible: bets().length == 0">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Oh snap!</strong>
+            Nenhuma aposta encontrada para o jogo.
+        </div>
+
+        <div class="panel panel-primary" data-bind="visible: bets().length > 0">
+            <div class="panel-heading">
+                <h3 class="panel-title">Minhas Apostas</h3>
+            </div>
+            <div class="panel-body">
+
+                <p>Acertos <span class="label label-success" data-bind="text: lotofacilHitsOk"></span></p>
+
+                <div class="list-group" data-bind="visible: lotofacilHitsOk() >= 11">
+
+                    <div class="list-group-item">
+                        <div class="row-picture">
+                            <img class="circle"
+                                 src="img/prize.png"
+                                 alt="lotofacil premio"/>
+                        </div>
+                        <div class="row-content">
+                            <h4 class="list-group-item-heading">Uuuuuuhhhhhh \m/</h4>
+
+                            <p class="list-group-item-text">
+                                Você fez <strong data-bind="text: lotofacilHitsOk">11</strong> acertos
+                                e ganhou R$ <strong data-bind="text: lotofacilCurrentPrize">4,00</strong>
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <table class="table table-condensed table-responsive">
+                    <tr>
+                        <th></th>
+                        <th>Owner</th>
+                        <th>#</th>
+                    </tr>
+
+                    <!-- ko foreach: bets -->
+                    <tr>
+                        <td>
+                            <!-- ko if: $parent.currentBet() == $data -->
+                            <i class="material-icons small">label</i>
+                            <!-- /ko -->
+                            <!-- ko if: $parent.currentBet() != $data -->
+                            <a data-bind="click: $parent.updateCurrentBet" href="#/loto">
+                                <i class="material-icons small">label_outline</i>
+                            </a>
+                            <!-- /ko -->
+                        </td>
+                        <td><a data-bind="text: $data.owner, attr: { href: '#/loto/bets/' + $data.owner }"></a></td>
+                        <td><span data-bind="text: $data.numbers"></span></td>
+                    </tr>
+                    <!-- /ko -->
+
+                </table>
+            </div>
+
+        </div>
+
+        <!-- /Minhas Apostas ------------------------------------------------------------------------------------------>
+
     </div>
+
+</div>

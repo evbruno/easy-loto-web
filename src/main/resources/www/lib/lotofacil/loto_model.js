@@ -1,18 +1,49 @@
 define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'api'],
         function(template, ko, _, api) {
 
-    var Wrapped = function(value) {
-        this.name = value;
+    var Paginator = function() {
+        var self = this;
 
-        this.name.toString = function() {
-            return this.join(', ');
-        }
+        self.pageSize = ko.observable(7);
+        self.currentPage = ko.observable(1);
+        self.totalPages = ko.observable(-1);
+
+        self.items = ko.observableArray();
+        self.items.subscribe(function(newValue){
+            self.totalPages(Math.ceil(newValue.length / self.pageSize()));
+        });
+
+        self.getItems = ko.pureComputed(function() {
+            var ini = (self.currentPage () - 1) * self.pageSize();
+            var end = ini + self.pageSize();
+            return self.items.slice(ini, end);
+        });
+
+        self.canGoBack = function() {
+            return self.currentPage() > 1;
+        };
+
+        self.goBack = function() {
+            if (self.canGoBack())
+                self.currentPage(self.currentPage() - 1);
+        };
+
+        self.canGoForward = function() {
+            return self.currentPage() < self.totalPages();
+        };
+
+        self.goForward = function() {
+            if (self.canGoForward())
+                self.currentPage(self.currentPage() + 1);
+        };
     };
 
     var LotofacilViewModel = function(params) {
         var self = this;
 
         var AMOUNT = 15;
+
+        self.paginator = ko.observable(new Paginator());
 
         self.lotofacil = ko.observableArray();
         self.currentDraw = ko.observable(null);
@@ -22,7 +53,7 @@ define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'ap
         self.lotofacilHitsOk = ko.observable(0);
 
         self.lotofacilCurrentPrize = ko.pureComputed(function() {
-            if (!self.currentBet() || !self.currentDraw() || !self.lotofacilHitsOk() || self.lotofacilHitsOk() < 10)
+            if (!self.currentBet() || !self.currentDraw() || !self.lotofacilHitsOk() || self.lotofacilHitsOk() < 11)
                 return "0,00";
 
             var idx = 15 - self.lotofacilHitsOk();
@@ -66,6 +97,7 @@ define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'ap
                 }
 
                 self.lotofacil(dataArr);
+                self.paginator().items(dataArr);
 
                 if (dataArr.length > 0)
                     self.updateCurrentDraw(dataArr[0]);
@@ -79,8 +111,12 @@ define(['text!../lib/lotofacil/loto_template.html','knockout', 'underscore', 'ap
         self.updateCurrentBet = function() {
             var newBet = arguments[0];
             console.log(newBet);
-            var miss = _(self.currentDraw().numbers).difference(newBet.numbers);
-            self.lotofacilHitsOk(AMOUNT - miss.length);
+            if (newBet) {
+                var miss = _(self.currentDraw().numbers).difference(newBet.numbers);
+                self.lotofacilHitsOk(AMOUNT - miss.length);
+            } else
+                self.lotofacilHitsOk(0);
+
             self.currentBet(newBet);
         };
 
