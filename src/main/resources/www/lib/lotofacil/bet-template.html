@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-md-6 col-md-offset-6">
+        <ul class="breadcrumb">
+            <li><a href="#/loto">Loto</a></li>
+            <li data-bind="css: { 'active' : ! currentBet() }">Bets</li>
+            <li class="active" data-bind="text: currentBet, visible: currentBet() "></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+
+    <!-- Bets ---------------------------------------------------------------------------------------------------->
+
+    <div class="col-md-6">
+
+        <div class="panel panel-primary panel-loto">
+            <div class="panel-heading">
+                Lotofácil Apostas
+
+            </div>
+            <div class="panel-body">
+
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th width="1">Jogo</th>
+                        <th>Números</th>
+                    </tr>
+                    </thead>
+                </table>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- /Bets ------------------------------------------------------------------------------------------------------->
+
+    <div class="col-md-6">
+
+        <!-- Current Bet ----------------------------------------------------------------------------------------------->
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Aposta Atual</div>
+            <div class="panel-body">
+
+               Agora: <span data-bind="text: dateNow"></span>
+
+            </div>
+
+        </div>
+
+        <!-- /Current Bet ---------------------------------------------------------------------------------------------->
+
+    </div>
+
+</div>

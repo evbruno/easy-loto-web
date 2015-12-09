@@ -47,7 +47,7 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li data-bind="css: {'active' : pageComponent() == 'home'}"><a href="#/">Home</a></li>
-                <li data-bind="css: {'active' : pageComponent() == 'loto'}"><a href="#/loto">Loto</a></li>
+                <li data-bind="css: {'active' : pageComponent().match(/^loto/)}"><a href="#/loto">Loto</a></li>
                 <li><a href="#mega">Mega</a></li>
                 <li><a href="#config">Config</a></li>
             </ul>
@@ -58,7 +58,7 @@
 
 <div class="container">
 
-    <div class="main" data-bind="component: {name: pageComponent}"></div>
+    <div class="main" data-bind="component: {name: pageComponent, params: pageParams}"></div>
 
 </div>
 <!-- /.container -->
